@@ -28,6 +28,10 @@ ABI to Go package
 abigen --abi contracts/Greeter.abi --pkg greeter --out greeter.go
 ```
 
-# License
+## Resources
+
+- [Native DApps: Go bindings to Ethereum contracts](https://github.com/ethereum/go-ethereum/wiki/Native-DApps:-Go-bindings-to-Ethereum-contracts)
+
+## License
 
 MIT
