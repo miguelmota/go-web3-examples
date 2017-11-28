@@ -4,14 +4,19 @@ import (
 	"context"
 	"fmt"
 	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	//"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/miguelmota/go-web3-example/greeter"
+	"io/ioutil"
 	"log"
-	//"math/big"
+	"math/big"
+	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -25,10 +30,10 @@ func main() {
 	}
 
 	// with no 0x
-	greeterAddress := "a7b2eb1b9fff7c9625373a6a6d180e36b552fc4c"
+	greeterAddress := "ecadc59908d98c937c3cf9ffefad43145d74923c"
 
 	// with no 0x
-	priv := "123"
+	priv := "123..."
 
 	key, err := crypto.HexToECDSA(priv)
 
@@ -78,13 +83,37 @@ func main() {
 		return
 	}
 
+	abiPath, _ := filepath.Abs("./contracts/Greeter.abi")
+	file, err := ioutil.ReadFile(abiPath)
+
+	if err != nil {
+		fmt.Println("Failed to read file:", err)
+	}
+
+	greeterAbi, err := abi.JSON(strings.NewReader(string(file)))
+	if err != nil {
+		fmt.Println("Invalid abi:", err)
+	}
+
 	for {
 		select {
 		case err := <-sub.Err():
 			log.Fatal(err)
 		case log := <-ch:
-			// TODO figure out how to decode log data
-			fmt.Println("Log:", log)
+			var greetEvent struct {
+				Name  string
+				Count *big.Int
+			}
+
+			err = greeterAbi.Unpack(&greetEvent, "_Greet", log.Data)
+
+			if err != nil {
+				fmt.Println("Failed to unpack:", err)
+			}
+
+			fmt.Println("Contract:", log.Address.Hex())
+			fmt.Println("Name:", greetEvent.Name)
+			fmt.Println("Count:", greetEvent.Count)
 		}
 	}
 

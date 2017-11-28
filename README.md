@@ -13,6 +13,7 @@ Shows how to
 - load a private key
 - call a contract method
 - subscribe to contract events
+- decode event log
 
 ## Development
 
