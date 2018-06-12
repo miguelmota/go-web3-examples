@@ -33,7 +33,7 @@ func main() {
 	greeterAddress := "ecadc59908d98c937c3cf9ffefad43145d74923c"
 
 	// with no 0x
-	priv := "123..."
+	priv := "117bbcf6bdc3a8e57f311a2b4f513c25b20e3ad4606486d7a927d8074872c2af"
 
 	key, err := crypto.HexToECDSA(priv)
 

@@ -2,6 +2,14 @@
 
 > Example of how to use "Web3" in golang.
 
+---
+
+## UPDATE
+
+Check out my little book on [Ethereum Development with Go](https://github.com/miguelmota/ethereum-development-with-go-book) as a better guide.
+
+---
+
 ## Synopsis
 
 Shows how to
